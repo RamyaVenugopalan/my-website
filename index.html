@@ -432,7 +432,377 @@ footer {
       <a href="https://chat.openai.com" target="_blank">🤖</a>
       <a href="https://www.canva.com" target="_blank">🎨</a>
       <a href="https://unsplash.com" target="_blank">🖼️</a>
-      <a href="taskbestmanager.html" title="Go to Tasks Page">📝</a>
+      <a href="<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ultimate Task Manager with Reminders</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 15px;
+    max-width: 1000px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+  }
+  input[type="text"], input[type="datetime-local"], select {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    width: calc(20% - 10px);
+  }
+  button {
+    padding: 10px 15px;
+    background-color: #6a11cb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background-color: #8a2be2;
+  }
+  #searchInput {
+    width: calc(30% - 10px);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    background: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: grab;
+    transition: background 0.3s;
+  }
+  li.dragging {
+    opacity: 0.5;
+  }
+  .task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .task-title {
+    font-size: 16px;
+    font-weight: bold;
+    flex: 1;
+    margin-left: 10px;
+  }
+  .task-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .task-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+    color: #555;
+  }
+  /* Priority colors */
+  .priority-high { color: red; font-weight: bold; }
+  .priority-medium { color: orange; font-weight: bold; }
+  .priority-low { color: green; font-weight: bold; }
+  /* Dark mode support */
+  body.dark-mode {
+    background: #222;
+    color: #eee;
+  }
+  body.dark-mode .container {
+    background: #333;
+  }
+  body.dark-mode input, body.dark-mode select {
+    background: #555;
+    color: #eee;
+    border-color: #777;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Ultimate Task Manager with Reminders</h1>
+  <div class="top-controls">
+    <input type="text" id="searchInput" placeholder="Search tasks..." onkeyup="filterTasks()" />
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+  <div class="add-task-form">
+    <input type="text" id="taskInput" placeholder="New task..." />
+    <select id="categoryInput">
+      <option value="">Category</option>
+      <option value="Work">Work</option>
+      <option value="Personal">Personal</option>
+      <option value="Shopping">Shopping</option>
+      <option value="Others">Others</option>
+    </select>
+    <select id="priorityInput">
+      <option value="">Priority</option>
+      <option value="High" style="color:red;">High</option>
+      <option value="Medium" style="color:orange;">Medium</option>
+      <option value="Low" style="color:green;">Low</option>
+    </select>
+    <input type="datetime-local" id="reminderInput" />
+    <select id="repeatInterval">
+      <option value="">No Repeat</option>
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+    <button onclick="addTask()">Add</button>
+  </div>
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+  // Request notification permission on page load
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission();
+  }
+
+  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  window.onload = function() {
+    displayTasks();
+    checkReminders();
+    setInterval(checkReminders, 60000); // check every minute
+  };
+
+  function addTask() {
+    const taskText = document.getElementById('taskInput').value.trim();
+    const category = document.getElementById('categoryInput').value;
+    const priority = document.getElementById('priorityInput').value;
+    const reminderTime = document.getElementById('reminderInput').value;
+    const repeatInterval = document.getElementById('repeatInterval').value;
+    if (taskText !== "") {
+      const task = {
+        text: taskText,
+        category: category,
+        priority: priority,
+        reminder: reminderTime,
+        repeatInterval: repeatInterval,
+        completed: false,
+        notified: false,
+        id: Date.now()
+      };
+      tasks.push(task);
+      saveTasks();
+      displayTasks();
+      document.getElementById('taskInput').value = "";
+      document.getElementById('categoryInput').value = "";
+      document.getElementById('priorityInput').value = "";
+      document.getElementById('reminderInput').value = "";
+      document.getElementById('repeatInterval').value = "";
+    }
+  }
+
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    displayTasks();
+  }
+
+  function toggleComplete(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks();
+    displayTasks();
+  }
+
+  function editTask(index) {
+    const task = tasks[index];
+    const li = document.getElementById(`task-${task.id}`);
+    li.innerHTML = `
+      <div class="task-header">
+        <input type="checkbox" class="status-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleComplete(${index})" title="Mark as complete" />
+        <input type="text" id="edit-text-${task.id}" value="${task.text}" style="flex:1; padding:8px; font-size:14px; border-radius:8px; border:2px solid #ddd;" />
+      </div>
+      <div class="task-details">
+        <select id="edit-category-${task.id}">
+          <option value="">Category</option>
+          <option value="Work" ${task.category==='Work'?'selected':''}>Work</option>
+          <option value="Personal" ${task.category==='Personal'?'selected':''}>Personal</option>
+          <option value="Shopping" ${task.category==='Shopping'?'selected':''}>Shopping</option>
+          <option value="Others" ${task.category==='Others'?'selected':''}>Others</option>
+        </select>
+        <select id="edit-priority-${task.id}">
+          <option value="">Priority</option>
+          <option value="High" ${task.priority==='High'?'selected':''} style="color:red;">High</option>
+          <option value="Medium" ${task.priority==='Medium'?'selected':''} style="color:orange;">Medium</option>
+          <option value="Low" ${task.priority==='Low'?'selected':''} style="color:green;">Low</option>
+        </select>
+        <input type="datetime-local" id="edit-reminder-${task.id}" value="${task.reminder}" />
+        <select id="edit-repeat-${task.id}">
+          <option value="">No Repeat</option>
+          <option value="daily" ${task.repeatInterval==='daily'?'selected':''}>Daily</option>
+          <option value="weekly" ${task.repeatInterval==='weekly'?'selected':''}>Weekly</option>
+          <option value="monthly" ${task.repeatInterval==='monthly'?'selected':''}>Monthly</option>
+        </select>
+      </div>
+      <div class="task-controls" style="margin-top:10px;">
+        <button onclick="saveEdit(${index})">Save</button>
+        <button onclick="displayTasks()">Cancel</button>
+      </div>
+    `;
+  }
+
+  function saveEdit(index) {
+    const task = tasks[index];
+    const newText = document.getElementById(`edit-text-${task.id}`).value.trim();
+    const newCategory = document.getElementById(`edit-category-${task.id}`).value;
+    const newPriority = document.getElementById(`edit-priority-${task.id}`).value;
+    const newReminder = document.getElementById(`edit-reminder-${task.id}`).value;
+    const newRepeat = document.getElementById(`edit-repeat-${task.id}`).value;
+    if (newText !== "") {
+      task.text = newText;
+      task.category = newCategory;
+      task.priority = newPriority;
+      task.reminder = newReminder;
+      task.repeatInterval = newRepeat;
+      saveTasks();
+      displayTasks();
+    }
+  }
+
+  function displayTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = "";
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    tasks.filter(t => t.text.toLowerCase().includes(searchTerm)).forEach((task, index) => {
+      const li = document.createElement('li');
+      li.id = `task-${task.id}`;
+      // Priority color
+      let priorityClass = "";
+      if(task.priority==='High') priorityClass='priority-high';
+      else if(task.priority==='Medium') priorityClass='priority-medium';
+      else if(task.priority==='Low') priorityClass='priority-low';
+
+      li.draggable = true;
+      li.ondragstart = (e) => { e.dataTransfer.setData('text/plain', index); li.classList.add('dragging'); };
+      li.ondragover = (e) => { e.preventDefault(); };
+      li.ondrop = (e) => { 
+        e.preventDefault(); 
+        const fromIndex = e.dataTransfer.getData('text/plain');
+        moveTask(fromIndex, index);
+        li.classList.remove('dragging');
+      };
+      li.ondragend = () => { li.classList.remove('dragging'); };
+
+      li.innerHTML = `
+        <div class="task-header">
+          <input type="checkbox" class="status-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleComplete(${index})" title="Mark as complete" />
+          <div class="task-title ${priorityClass}" style="color:${getColorForPriority(task.priority)};">${task.text}</div>
+        </div>
+        <div class="task-details">
+          <strong>Category:</strong> ${task.category || 'None'} 
+          <strong>Priority:</strong> ${task.priority || 'None'} 
+          <strong>Reminder:</strong> ${task.reminder ? new Date(task.reminder).toLocaleString() : 'None'}
+          ${task.repeatInterval ? `<strong>Repeats:</strong> ${task.repeatInterval}` : ''}
+        </div>
+        <div class="task-controls">
+          <button onclick="editTask(${index})" title="Edit">✏️</button>
+          <button onclick="deleteTask(${index})" title="Delete">🗑️</button>
+        </div>
+      `;
+      taskList.appendChild(li);
+    });
+  }
+
+  function moveTask(fromIndex, toIndex) {
+    const task = tasks.splice(fromIndex, 1)[0];
+    tasks.splice(toIndex, 0, task);
+    saveTasks();
+    displayTasks();
+  }
+
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  function checkReminders() {
+    const now = new Date();
+    tasks.forEach((task, index) => {
+      if (task.reminder && !task.notified) {
+        const reminderDate = new Date(task.reminder);
+        if (reminderDate <= now) {
+          // Send notification
+          if (Notification.permission === 'granted') {
+            new Notification(`Reminder: ${task.text}`);
+          }
+          task.notified = true;
+
+          // Handle recurring reminders
+          if (task.repeatInterval) {
+            let nextReminder = new Date(task.reminder);
+            switch(task.repeatInterval) {
+              case 'daily':
+                nextReminder.setDate(nextReminder.getDate() + 1);
+                break;
+              case 'weekly':
+                nextReminder.setDate(nextReminder.getDate() + 7);
+                break;
+              case 'monthly':
+                nextReminder.setMonth(nextReminder.getMonth() + 1);
+                break;
+            }
+            task.reminder = nextReminder.toISOString().slice(0,16);
+            task.notified = false; // Reset notification flag for next reminder
+          }
+        }
+      }
+    });
+    saveTasks();
+  }
+
+  function filterTasks() {
+    displayTasks();
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+
+  function getColorForPriority(priority) {
+    switch(priority) {
+      case 'High': return 'red';
+      case 'Medium': return 'orange';
+      case 'Low': return 'green';
+      default: return '#333';
+    }
+  }
+</script>
+</body>
+</html>" title="Go to Tasks Page">📝</a>
     </div>
     <div class="content">
       <div class="search-box">
