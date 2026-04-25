@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI World & Web Designer</title>
+<link
+  href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap"
+  rel="stylesheet"
+/>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+/* ... [Your existing styles remain unchanged] ... */
+
+.switch-icons {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+}
+.switch-icons button {
+  background: none;
+  border: 2px solid #00ffff;
+  color: #00ffff;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffff;
+}
+.switch-icons button:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 25px #00ffff;
+}
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  transition: opacity 0.5s ease;
+}
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+/* ---------- AI WORLD ---------- */
+#world {
+  font-family: 'Orbitron', monospace;
+  background: #000;
+  color: #00ffff;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.world-sidebar {
+  width: 110px;
+  background: #000;
+  border-right: 3px solid #00ffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25px;
+  box-shadow: 0 0 25px #00ffff;
+  animation: glow 3s infinite alternate;
+}
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px #00ffff;
+  }
+  to {
+    box-shadow: 0 0 30px #00ffff;
+  }
+}
+.world-sidebar a {
+  margin: 22px 0;
+  text-align: center;
+  text-decoration: none;
+  font-size: 38px;
+  transition: 0.3s;
+  border: 2px solid #00ffff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+}
+.world-sidebar a:hover {
+  background-color: #00ffff;
+  color: #000;
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #00ffff;
+}
+.world-sidebar a.game-btn {
+  font-size: 34px;
+  line-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.world-content {
+  flex: 1;
+  padding: 30px;
+}
+.world-content header,
+.world-content section,
+.world-content footer {
+  border: 3px solid #00ffff;
+  border-radius: 15px;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 30px;
+  box-shadow: 0 0 25px #00ffff;
+  background: rgba(0, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  transition: 0.4s;
+}
+.world-content header h1 {
+  text-align: center;
+  font-size: 48px;
+  text-shadow: 0 0 15px #00ffff;
+}
+.world-content header p {
+  text-align: center;
+  font-size: 18px;
+}
+.search-box {
+  text-align: center;
+  margin-top: 30px;
+}
+.search-box input[type="text"] {
+  width: 70%;
+  padding: 12px;
+  border: 3px solid #00ffff;
+  border-radius: 10px;
+  background: #000;
+  color: #00ffff;
+  font-size: 16px;
+  font-family: 'Orbitron', monospace;
+  box-shadow: 0 0 10px #00ffff inset;
+}
+.search-box input[type="submit"] {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: 3px solid #00ffff;
+  border-radius: 10px;
+  background: #000;
+  color: #00ffff;
+  cursor: pointer;
+  font-family: 'Orbitron', monospace;
+  box-shadow: 0 0 10px #00ffff;
+  transition: 0.3s;
+}
+.search-box input[type="submit"]:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 25px #00ffff;
+}
+/* New: style for the fetch images button */
+#fetchImagesBtn {
+  margin-left: 10px;
+  padding: 12px 20px;
+  border: 3px solid #00ffff;
+  border-radius: 10px;
+  background: #000;
+  color: #00ffff;
+  cursor: pointer;
+  font-family: 'Orbitron', monospace;
+  box-shadow: 0 0 10px #00ffff;
+  transition: 0.3s;
+}
+#fetchImagesBtn:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 25px #00ffff;
+}
+footer {
+  text-align: center;
+  font-size: 14px;
+}
+#search-result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #ff0;
+}
+/* ---------- AI WEB DESIGNER ---------- */
+#designer {
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    135deg,
+    lavender,
+    violet,
+    pink,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet,
+    lavender
+  );
+  background-size: 400% 400%;
+  animation: smoothRainbow 14s ease-in-out infinite;
+}
+@keyframes smoothRainbow {
+  0% {
+    background-position: 0% 50%;
+    filter: brightness(1);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: brightness(1.2);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: brightness(1);
+  }
+}
+#designer header {
+  text-align: center;
+  padding: 25px;
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px #fff, 0 0 40px #fff;
+}
+#designer .main-container {
+  display: flex;
+  flex: 1;
+}
+#designer .sidebar {
+  width: 100px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  box-shadow: 2px 0 10px rgba(255, 255, 255, 0.3);
+}
+#designer .sidebar a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 28px;
+  margin: 25px 0;
+  transition: 0.3s;
+  filter: drop-shadow(0 0 6px #fff);
+}
+#designer .sidebar a:hover {
+  transform: scale(1.3);
+  color: #fff;
+  filter: drop-shadow(0 0 12px #fff);
+}
+#designer .content {
+  flex: 1;
+  padding: 40px;
+  text-align: center;
+}
+#designer .search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+/* Input style */
+#designer input[type='text'] {
+  width: 50%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px 0 0 30px;
+  font-size: 1.1em;
+  outline: none;
+  color: #000;
+  background: linear-gradient(
+    270deg,
+    #ffb6c1,
+    #ffe6b3,
+    #e6ffe6,
+    #b3e6ff,
+    #e6b3ff
+  );
+  background-size: 1000% 1000%;
+  animation: rainbowInput 8s linear infinite;
+  box-shadow: 0 0 15px #ffb6c1, 0 0 20px #b3e6ff, 0 0 25px #e6ffe6, 0 0 30px #e6b3ff;
+}
+/* Button style */
+#designer button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 0 30px 30px 0;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(
+    270deg,
+    #ffe6b3,
+    #e6ffe6,
+    #b3e6ff,
+    #e6b3ff,
+    #ffb6c1
+  );
+  background-size: 1000% 1000%;
+  animation: rainbowInput 8s linear infinite;
+  box-shadow: 0 0 15px #ffb6c1, 0 0 20px #b3e6ff, 0 0 25px #e6ffe6, 0 0 30px #e6b3ff;
+  transition: 0.3s;
+}
+#designer button:hover {
+  box-shadow: 0 0 25px #ffb6c1, 0 0 30px #b3e6ff, 0 0 35px #e6ffe6, 0 0 40px #e6b3ff;
+}
+@keyframes rainbowInput {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.definition {
+  font-size: 1.1em;
+  margin-top: 15px;
+  color: #fff;
+}
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  justify-content: center;
+  margin-top: 30px;
+}
+.result-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  transition: 0.3s ease;
+}
+.result-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+}
+.result-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+#designer footer {
+  text-align: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px #fff;
+}
+</style>
+</head>
+<body>
+<div class="switch-icons">
+  <button id="toDesigner" title="Go to AI Web Designer">✨</button>
+  <button id="toWorld" title="Back to AI World Overview">🔙</button>
+</div>
+
+<!-- AI WORLD -->
+<div id="world" class="page">
+  <div class="world-sidebar">
+    <a href="https://chat.openai.com/" target="_blank">🖥️</a>
+    <a href="https://www.canva.com/" target="_blank">🎨</a>
+    <a href="https://copilot.microsoft.com/" target="_blank">🤖</a>
+    <a href="https://gemini.google.com/" target="_blank">📱</a>
+    <a href="https://www.google.com/chrome/" target="_blank">🌐</a>
+    <a href="https://poki.com/" target="_blank" class="game-btn">🎮</a>
+  </div>
+  <div class="world-content">
+    <header>
+      <h1>AI World</h1>
+      <p>Overview of Artificial Intelligence</p>
+    </header>
+    <section>
+      <h2>What is AI?</h2>
+      <p>Artificial Intelligence (AI) is the simulation of human intelligence in machines that can think, learn, and perform tasks like humans.</p>
+    </section>
+    <section class="search-box">
+      <h2>Search AI Topics</h2>
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="Search AI..." />
+        <input type="submit" value="Search" />
+      </form>
+    </section>
+    <footer>&copy; 2025 AI World made by RITVIKA</footer>
+  </div>
+</div>
+
+<!-- AI WEB DESIGNER -->
+<div id="designer" class="page hidden">
+  <header>✨ AI Web Designer ✨</header>
+  <div class="main-container">
+    <div class="sidebar">
+      <a href="https://www.google.com" target="_blank">🌐</a>
+      <a href="https://www.youtube.com" target="_blank">🎬</a>
+      <a href="https://chat.openai.com" target="_blank">🤖</a>
+      <a href="https://www.canva.com" target="_blank">🎨</a>
+      <a href="https://unsplash.com" target="_blank">🖼️</a>
+      <a href="taskbestmanager.html" title="Go to Tasks Page">📝</a>
+    </div>
+    <div class="content">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search anything... e.g. Car, Dog, Space" />
+        <button id="fetchImagesBtn" onclick="fetchUnsplashImages()">🖼️ Fetch Images</button>
+      </div>
+      <div id="definition" class="definition"></div>
+      <div id="results" class="results"></div>
+    </div>
+  </div>
+  <footer>© 2025 AI Web Designer | Made by RITVIKA 🌟</footer>
+</div>
+
+<script>
+// Your existing scripts...
+const world = document.getElementById('world');
+const designer = document.getElementById('designer');
+document.getElementById('toDesigner').onclick = () => {
+  world.classList.add('hidden');
+  designer.classList.remove('hidden');
+};
+document.getElementById('toWorld').onclick = () => {
+  designer.classList.add('hidden');
+  world.classList.remove('hidden');
+};
+
+const form = document.getElementById('search-form');
+const input = document.getElementById('search-input');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const q = input.value.trim();
+  if (q) {
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank');
+  }
+});
+
+const topics = {
+  car: {
+    text: 'A car is a four-wheeled vehicle used for transportation.',
+    images: [
+      'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+      'https://images.unsplash.com/photo-1542367592-8849eb950fd8',
+      'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023',
+    ],
+  },
+  dog: {
+    text: 'A dog is a loyal, friendly animal often kept as a pet.',
+    images: [
+      'https://images.unsplash.com/photo-1518717758536-85ae29035b6d',
+      'https://images.unsplash.com/photo-1507146426996-ef05306b995a',
+      'https://images.unsplash.com/photo-1517849845537-4d257902454a',
+    ],
+  },
+  space: {
+    text: 'Space is the vast universe beyond Earth, full of stars and galaxies.',
+    images: [
+      'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa',
+      'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3',
+      'https://images.unsplash.com/photo-1454789548928-9efd52dc4031',
+    ],
+  },
+};
+
+function searchTopic() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const def = document.getElementById('definition');
+  const res = document.getElementById('results');
+  def.innerHTML = '';
+  res.innerHTML = '';
+  if (!q) {
+    def.innerHTML = '<p>Please type something to search 🔍</p>';
+    return;
+  }
+  if (topics[q]) {
+    def.innerHTML = `<p>${topics[q].text}</p>`;
+    topics[q].images.forEach((img) => {
+      const c = document.createElement('div');
+      c.classList.add('result-card');
+      c.innerHTML = `<img src="${img}" alt="${q}" />`;
+      res.appendChild(c);
+    });
+  } else {
+    def.innerHTML = `<p>Sorry, no results for '${q}'. Try Car, Dog, or Space.</p>`;
+  }
+}
+
+// Your Unsplash API key
+const UNSPLASH_ACCESS_KEY = 'Lx14az0Ii0QCM5TbqtdssM2ELc_k68xOJvSx9ZsRMYI'; // <-- Replace with your actual API key
+
+function fetchUnsplashImages() {
+  const query = document.getElementById('searchInput').value.trim();
+  const resDiv = document.getElementById('results');
+  // Clear previous images/results
+  resDiv.innerHTML = '';
+
+  if (!query) {
+    alert('Please enter a search term to fetch images.');
+    return;
+  }
+
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${UNSPLASH_ACCESS_KEY}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.results || data.results.length === 0) {
+        resDiv.innerHTML = `<p>No images found for "${query}".</p>`;
+        return;
+      }
+      data.results.forEach((img) => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `<img src="${img.urls.small}" alt="${query}" />`;
+        resDiv.appendChild(card);
+      });
+    })
+    .catch((error) => {
+      console.error('Error fetching images:', error);
+      alert('Error fetching images. Make sure your API key is correct.');
+    });
+}
+</script>
+</body>
+</html>
